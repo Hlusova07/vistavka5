@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Глубины чувств: Искусство в тенях — выставка</title>
+
+  <!-- Google Font (если требуется изменить — можно) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================
+       CSS-RESET / BOX-SIZING
+       ====================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body, #root { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #0b0b0c 0%, #12080a 50%, #0b0606 100%);
+      color: #f6f2f1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.45;
+      font-size: 16px;
+    }
+
+    /* ======================
+       CSS VARIABLES
+       ====================== */
+    :root{
+      --bg:#0b0b0c;
+      --panel:#10070a;
+      --accent:#6f0f14;          /* бордовый */
+      --accent-2:#8b1b25;
+      --muted:#a9a0a0;
+      --glass: rgba(255,255,255,0.03);
+      --card:#141214;
+      --main-font-size:16px;
+      --h1-size: clamp(1.6rem, 3.8vw, 2.6rem);
+      --container-width: 1100px;
+      --radius:12px;
+      --glass-border: rgba(255,255,255,0.04);
+      --focus-ring: rgba(139,27,37,0.35);
+      --nav-height:64px;
+      --transition: 260ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* ======================
+       LAYOUT (HEADER)
+       ====================== */
+    header {
+      position: sticky; /* sticky requirement */
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(10,6,7,0.6), rgba(10,6,7,0.35));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand .logo {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 6px 18px rgba(111,15,20,0.25);
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+    .brand p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: color var(--transition), background-color var(--transition), transform var(--transition);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    nav a:hover, nav a:focus {
+      color: #fff;
+      background: linear-gradient(90deg, rgba(139,27,37,0.12), rgba(111,15,20,0.07));
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    /* hamburger for mobile */
+    .burger {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.03);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .burger:focus { box-shadow: 0 0 0 6px var(--focus-ring); }
+
+    /* ======================
+       HERO
+       ====================== */
+    .hero {
+      min-height: calc(80vh - var(--nav-height));
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 40px;
+      align-items: center;
+      padding: 48px 20px;
+    }
+
+    .hero-left {
+      color: #fff;
+      position: relative;
+    }
+
+    .kicker {
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(139,27,37,0.18), rgba(111,15,20,0.08));
+      color: var(--accent-2);
+    }
+
+    h2.main-title {
+      margin: 18px 0 10px;
+      font-size: var(--h1-size);
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      position: relative;
+    }
+    /* ::before accent line for hero heading */
+    h2.main-title::before {
+      content: "";
+      position: absolute;
+      left: -56px;
+      top: 12px;
+      width: 44px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 6px 22px rgba(111,15,20,0.35);
+      transform-origin: left;
+    }
+
+    p.lead {
+      color: var(--muted);
+      max-width: 68ch;
+      margin-bottom: 22px;
+      font-size: 1.02rem;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    a.cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(111,15,20,0.28);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    a.cta:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(111,15,20,0.38); }
+    a.secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.04);
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 10px;
+      transition: background var(--transition), color var(--transition);
+    }
+    a.secondary:hover { background: var(--glass); color: #fff; }
+
+    /* hero-right card (grid example) */
+    .hero-right {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .info-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--glass-border);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+    .info-card h3 { margin: 0 0 6px 0; font-size: 1rem; }
+    .info-meta { display:flex; gap: 12px; align-items:center; color: var(--muted); font-size: 0.95rem; }
+
+    /* ======================
+       GALLERY (Grid)
+       ====================== */
+    section.gallery {
+      padding: 32px 20px 60px;
+      max-width: var(--container-width);
+      margin: 0 auto;
+    }
+    .gallery-grid {
+      display: grid; /* grid requirement */
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative; /* for absolute overlay */
+      min-height: 220px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: 1px solid rgba(255,255,255,0.02);
+      display: flex;
+      flex-direction: column;
+    }
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.9) contrast(0.95);
+    }
+    .card .card-body {
+      padding: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .card h4 { margin:0; font-size:1rem; }
+    .card p { margin:0; color:var(--muted); font-size:0.95rem; }
+
+    /* overlay with absolute positioning */
+    .card .overlay {
+      position: absolute; /* absolute requirement */
+      right: 12px;
+      top: 12px;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #fff;
+      backdrop-filter: blur(4px);
+      opacity: 0.95;
+    }
+
+    /* nth-child demonstration: slight size variation/animation delays */
+    .gallery-grid .card:nth-child(1) { transform-origin: center; }
+    .gallery-grid .card:nth-child(odd) { transform: translateY(0); }
+    .gallery-grid .card:nth-child(even) { transform: translateY(6px); }
+    .gallery-grid .card:nth-child(3n) { transform: translateY(10px); }
+
+    .card:hover { transform: translateY(-10px) scale(1.01); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+
+    /* ======================
+       ABOUT + FORM
+       ====================== */
+    section.about {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+      padding: 0 20px 64px;
+      max-width: var(--container-width);
+      margin: 0 auto;
+    }
+
+    .about article {
+      background: transparent;
+      color: var(--muted);
+      padding: 28px;
+      border-radius: 12px;
+    }
+
+    /* FORM: subscription/contact */
+    form.subscribe {
+      background: linear-gradient(180deg, rgba(111,15,20,0.04), rgba(0,0,0,0.02));
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 20px;
+      border-radius: 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label { font-size: 0.9rem; color: var(--muted); display:block; }
+    .input-row { display:flex; gap:10px; }
+    input[type="text"], input[type="email"], textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+    }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.18); font-style: italic; } /* placeholder style */
+    input:focus, textarea:focus {
+      box-shadow: 0 6px 30px var(--focus-ring);
+      border-color: var(--accent-2);
+      transform: translateY(-2px);
+    }
+    .error { border-color: #b33 !important; box-shadow: 0 4px 20px rgba(179,51,51,0.18); }
+
+    button[type="submit"] {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #fff;
+      transition: transform var(--transition), box-shadow var(--transition);
+      align-self: start;
+    }
+    button[type="submit"]:hover { transform: translateY(-3px); box-shadow: 0 12px 34px rgba(111,15,20,0.32); }
+
+    .hint { font-size: 0.85rem; color: var(--muted); }
+
+    /* simple validation message */
+    .msg {
+      font-size: 0.9rem;
+      color: #aee3b0;
+      background: rgba(162,211,179,0.06);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(162,211,179,0.08);
+    }
+
+    /* ======================
+       FOOTER
+       ====================== */
+    footer {
+      padding: 28px 20px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      margin-top: 40px;
+    }
+    .footer-grid {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      display:flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+    }
+    .socials { display:flex; gap:12px; }
+    .socials a { color: var(--muted); text-decoration:none; padding:8px; border-radius:8px; }
+    .socials a:hover { color:#fff; background: var(--glass); }
+
+    /* fixed back-to-top */
+    .to-top {
+      position: fixed; /* fixed requirement */
+      right: 18px;
+      bottom: 18px;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      border: none;
+      padding: 12px;
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(111,15,20,0.3);
+      z-index: 60;
+      transition: transform var(--transition);
+    }
+    .to-top:hover { transform: translateY(-6px); }
+
+    /* ======================
+       ANIMATIONS
+       ====================== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 0 rgba(139,27,37,0.0); }
+      50% { box-shadow: 0 0 16px rgba(139,27,37,0.12); }
+      100% { box-shadow: 0 0 0 rgba(139,27,37,0.0); }
+    }
+    .animate { animation: fadeInUp 700ms var(--transition) both; }
+
+    /* subtle pulsing accent using ::after on cta */
+    a.cta::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      right: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+      animation: glow 2.6s infinite;
+    }
+
+    /* ======================
+       MEDIA QUERIES (2 breakpoints minimum)
+       ====================== */
+    @media (max-width: 1000px) {
+      .hero { grid-template-columns: 1fr; padding: 36px 20px; gap: 28px; }
+      .about { grid-template-columns: 1fr; gap: 18px; }
+      .hero-right { order: 2; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      nav ul { display: none; } /* hide desktop nav */
+      .burger { display: inline-flex; }
+      .hero { padding: 28px 14px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      header { padding: 8px 12px; }
+    }
+
+    /* small accessibility tweaks */
+    :focus { outline: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav" role="navigation" aria-label="Главная навигация">
+      <a href="#top" class="brand" aria-label="Перейти наверх">
+        <div class="logo" aria-hidden="true">Г</div>
+        <div>
+          <h1>Глубины чувств</h1>
+          <p>Искусство в тенях</p>
+        </div>
+      </a>
+
+      <nav aria-label="Основные разделы">
+        <ul>
+          <li><a href="#about">О выставке</a></li>
+          <li><a href="#gallery">Галерея</a></li>
+          <li><a href="#events">События</a></li>
+          <li><a href="#contact">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <button class="burger" aria-expanded="false" aria-controls="mobileMenu" id="burgerBtn" title="Открыть меню">
+        <svg width="18" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none; padding:12px 20px; background: linear-gradient(180deg, rgba(6,4,5,0.9), rgba(6,4,5,0.95)); position:sticky; top:64px; z-index: 35;">
+    <div class="container">
+      <nav>
+        <ul style="flex-direction:column; display:flex; gap:8px; list-style:none; padding:0; margin:0;">
+          <li><a href="#about">О выставке</a></li>
+          <li><a href="#gallery">Галерея</a></li>
+          <li><a href="#events">События</a></li>
+          <li><a href="#contact">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-left animate" style="animation-delay:80ms;">
+        <span class="kicker">Новая экспозиция</span>
+        <h2 class="main-title">Глубины чувств: <br><strong>Искусство в тенях</strong></h2>
+        <p class="lead">Погружаемся в мир, где свет и тень переплетаются, а эмоции обретают форму. Работы современных художников, инсталляции и перформансы — всё в интимной бордовой палитре.</p>
+
+        <div class="cta-row">
+          <a class="cta" href="#gallery" style="position:relative;">Посмотреть экспозицию</a>
+          <a class="secondary" href="#events">Календарь событий</a>
+        </div>
+      </div>
+
+      <aside class="hero-right animate" style="animation-delay:160ms;" aria-labelledby="info-title">
+        <div class="info-card">
+          <h3 id="info-title">Инфо</h3>
+          <div class="info-meta">
+            <span>📍 Центр Современного Искусства</span>
+            <span>•</span>
+            <span>🗓 12 Окт — 9 Ноября 2025</span>
+          </div>
+          <p style="margin-top:10px; color:var(--muted);">Открытие: 12 октября, 19:00 — перформанс и кураторская экскурсия.</p>
+        </div>
+
+        <div class="info-card" style="display:flex; gap:12px; align-items:center;">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><rect width='100%' height='100%' fill='%23100a0b'/><text x='50%' y='55%' font-size='22' text-anchor='middle' fill='%23fff' font-family='Arial'>&#9733;</text></svg>"
+               alt="Иконка события" width="72" height="72" style="border-radius:8px;"/>
+          <div>
+            <h4 style="margin:0;">Билеты</h4>
+            <p style="margin:0; color:var(--muted);">Купить и узнать цены можно на странице событий.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="gallery" class="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <header style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;">
+          <div>
+            <h3 id="gallery-title" style="margin:0; font-size:1.2rem;">Галерея</h3>
+            <p style="margin:6px 0 0; color:var(--muted);">Небольшая подборка работ экспозиции.</p>
+          </div>
+          <div style="color:var(--muted); font-weight:600;">Экспонатов: 9</div>
+        </header>
+
+        <div class="gallery-grid" role="list">
+          <!-- Card 1 -->
+          <article class="card" role="listitem">
+            <span class="overlay">Инсталляция</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_1_2025-09-30_00-13-36.jpg?raw=true" alt="Тёмная инсталляция с бордовыми акцентами" />
+            <div class="card-body">
+              <h4>Тёмные отражения</h4>
+              <p>Автор: Мария Иванова — смешанная техника, инсталляция.</p>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card" role="listitem">
+            <span class="overlay">Живопись</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_3_2025-09-30_00-13-36.jpg?raw=true" alt="Картина с бордовыми мазками" />
+            <div class="card-body">
+              <h4>Внутренний свет</h4>
+              <p>Автор: Алексей Смирнов — масло на холсте.</p>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card" role="listitem">
+            <span class="overlay">Фото</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_4_2025-09-30_00-13-36.jpg?raw=true" alt="Черно-белая фотография с глубокими тенями" />
+            <div class="card-body">
+              <h4>Тени памяти</h4>
+              <p>Автор: Инна Кузнецова — серия фотографий.</p>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card" role="listitem">
+            <span class="overlay">Видео</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_9_2025-09-30_00-13-36.jpg?raw=true" alt="Видео-инсталляция с динамическим светом" />
+            <div class="card-body">
+              <h4>Пульс</h4>
+              <p>Автор: коллектив "Nocturne" — аудио-визуальное шоу.</p>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="card" role="listitem">
+            <span class="overlay">Скульптура</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_8_2025-09-30_00-13-36.jpg?raw=true" alt="Скульптура в темных тонах" />
+            <div class="card-body">
+              <h4>Эхо</h4>
+              <p>Автор: Павел Романов — сталь и воск.</p>
+            </div>
+          </article>
+
+          <!-- Cards 6-9 (повтор для демонстрации) -->
+          <article class="card" role="listitem">
+            <span class="overlay">Живопись</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_7_2025-09-30_00-13-36.jpg?raw=true" alt="Современная картина с бордовыми слоями" />
+            <div class="card-body">
+              <h4>Слои</h4>
+              <p>Автор: Е. Смирнов — смешанная техника.</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem">
+            <span class="overlay">Инсталляция</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_2_2025-09-30_00-13-36.jpg?raw=true" alt="Абстрактная инсталляция с тенями" />
+            <div class="card-body">
+              <h4>Шепот</h4>
+              <p>Автор: Группа "ShadowLab".</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem">
+            <span class="overlay">Фото</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_4_2025-09-30_00-13-36.jpg?raw=true" alt="Фотография портрета в тёмных тонах" />
+            <div class="card-body">
+              <h4>Портреты</h4>
+              <p>Автор: Наталья Орлова.</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem">
+            <span class="overlay">Инсталляция</span>
+            <img src="https://github.com/Hlusova07/vistavka4/blob/main/photo_2_2025-09-30_00-13-36.jpg?raw=true" alt="Тёмная инсталляция с акцентами бордо" />
+            <div class="card-body">
+              <h4>Между светом</h4>
+              <p>Автор: Коллективная работа.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about" aria-labelledby="about-title">
+      <article>
+        <h3 id="about-title">О выставке</h3>
+        <p style="color:var(--muted);">«Глубины чувств» — выставка, исследующая отношения света и тени, интимности и отстранённости. Художники предлагают личные и коллективные истории через материалы, звук и пространство.</p>
+
+        <h4 style="margin-top:16px;">Программа</h4>
+        <ul style="color:var(--muted);">
+          <li>Кураторские экскурсии — каждую субботу</li>
+          <li>Перформансы на открытии и закрытии</li>
+          <li>Мастер-классы по инсталляции и светодизайну</li>
+        </ul>
+      </article>
+
+      <aside>
+        <form id="subscribeForm" class="subscribe" aria-labelledby="subscribe-title" novalidate>
+          <h4 id="subscribe-title">Подписаться на новости</h4>
+
+          <div>
+            <label for="name">Имя</label>
+            <input id="name" type="text" name="name" placeholder="Ваше имя" required minlength="2" />
+          </div>
+
+          <div>
+            <label for="email">E-mail</label>
+            <input id="email" type="email" name="email" placeholder="email@пример.ру" required />
+          </div>
+
+          <div>
+            <label for="message">Сообщение (необязательно)</label>
+            <textarea id="message" name="message" rows="4" placeholder="Напишите, если хотите получить персональное приглашение"></textarea>
+          </div>
+
+          <button type="submit">Подписаться</button>
+          <div id="formMsg" class="hint" role="status" aria-live="polite" style="display:none;"></div>
+        </form>
+      </aside>
+    </section>
+
+    <section id="events" class="container" style="padding: 8px 20px 60px;">
+      <header style="margin-bottom:10px;">
+        <h3>События</h3>
+        <p style="color:var(--muted); margin-top:6px;">Афиша ближайших мероприятий.</p>
+      </header>
+
+      <ul style="list-style:none; padding:0; margin:0; display:flex; gap:12px; flex-wrap:wrap;">
+        <li style="background:var(--card); padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); min-width:220px;">
+          <strong>12 Окт</strong><br><span style="color:var(--muted);">Открытие, 19:00</span>
+        </li>
+        <li style="background:var(--card); padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); min-width:220px;">
+          <strong>18 Окт</strong><br><span style="color:var(--muted);">Мастер-класс: свет и тень</span>
+        </li>
+        <li style="background:var(--card); padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); min-width:220px;">
+          <strong>1 Ноя</strong><br><span style="color:var(--muted);">Перформанс: Nocturne</span>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <strong>Глубины чувств</strong>
+        <div style="color:var(--muted);">© 2025 Центр Современного Искусства</div>
+      </div>
+      <div class="socials" aria-label="Социальные сети">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="VK">VK</a>
+        <a href="#" aria-label="Telegram">TG</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" title="Наверх" aria-label="Наверх">↑</button>
+
+  <script>
+    // ======================
+    // JS: меню, прокрутка, форма валидация
+    // ======================
+    (function(){
+      const burger = document.getElementById('burgerBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      burger.addEventListener('click', () => {
+        const expanded = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!expanded));
+        mobileMenu.style.display = expanded ? 'none' : 'block';
+      });
+
+      // back to top
+      const toTop = document.getElementById('toTop');
+      toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // Form validation (client-side)
+      const form = document.getElementById('subscribeForm');
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const message = document.getElementById('message');
+      const formMsg = document.getElementById('formMsg');
+
+      function showMsg(text, success=true){
+        formMsg.style.display='block';
+        formMsg.textContent = text;
+        formMsg.style.color = success ? '#aee3b0' : '#f4a6a6';
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let valid = true;
+        [name, email].forEach(el => el.classList.remove('error'));
+
+        if(!name.value || name.value.trim().length < 2){
+          valid = false;
+          name.classList.add('error');
+        }
+        // simple email regex
+        const emailRe = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        if(!emailRe.test(email.value)){
+          valid = false;
+          email.classList.add('error');
+        }
+
+        if(!valid){
+          showMsg('Пожалуйста, проверьте поля и попробуйте снова.', false);
+          return;
+        }
+
+        // Simulate successful submission (no backend). Show confirmation.
+        showMsg('Спасибо! Вы подписаны — проверьте почту для подтверждения.');
+        form.reset();
+      });
+
+      // Accessibility: show focus ring when navigating by keyboard
+      function handleFirstTab(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', handleFirstTab);
+        }
+      }
+      window.addEventListener('keydown', handleFirstTab);
+    })();
+  </script>
+</body>
+</html>
